@@ -12,7 +12,7 @@ api = Api(app)
 
 
 capd_parser = reqparse.RequestParser()
-capd_parser.add_argument('dialysate', type=FileStorage, location='files', required=True, help="Upload gambar hasil buangan.")
+capd_parser.add_argument('dialysate', type=FileStorage, location='files', required=True, help="Upload gambar hasil buangan!")
 
 
 class CAPDDetection(Resource):
@@ -45,7 +45,7 @@ api.add_resource(CAPDDetection, '/api')
 
 if __name__ == "__main__":
   with tf.device('/cpu:0'):
-    capd_model = load_model("model/model.h5", compile=False)
+    capd_model = load_model("./model/model.h5", compile=False)
 
   with open("./model/labels.txt") as file:
     capd_labels = file.read().splitlines()
