@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
 from werkzeug.datastructures import FileStorage
 from PIL import Image, ImageOps
@@ -37,7 +37,7 @@ class CAPDDetection(Resource):
     prediction_max = np.max(prediction[0])
     prediction_index = np.argmax(prediction[0])
 
-    return { "label": capd_labels[prediction_index], "accuracy": str(prediction_max) }
+    return { "label": capd_labels[prediction_index], "accuracy": np.float32(prediction_max).item() }
 
 
 api.add_resource(CAPDDetection, '/api')
@@ -50,4 +50,4 @@ if __name__ == "__main__":
   with open("./model/labels.txt") as file:
     capd_labels = file.read().splitlines()
 
-  app.run(debug=True)
+  app.run(host='0.0.0.0', debug=True, port=5001)

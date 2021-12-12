@@ -1,7 +1,0 @@
-tensorflow
-keras
-numpy
-Pillow
-werkzeug
-flask
-flask-restful
