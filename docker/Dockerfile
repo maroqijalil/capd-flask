@@ -4,7 +4,7 @@ ARG PORT
 
 ENV PORT=${PORT:-5001}
 
-RUN mkdir /app/files
+RUN mkdir -p /app/files
 
 COPY . /app
 
