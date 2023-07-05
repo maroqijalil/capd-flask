@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
 from werkzeug.datastructures import FileStorage
 from PIL import Image, ImageOps
-from keras.models import load_model
+from tensorflow import keras
 import numpy as np
 import tensorflow as tf
 
@@ -45,7 +45,7 @@ api.add_resource(CAPDDetection, '/api')
 
 if __name__ == "__main__":
   with tf.device('/cpu:0'):
-    capd_model = load_model("./model/model.h5", compile=False)
+    capd_model = keras.models.load_model("./model/best_model.h5", compile=False)
 
   with open("./model/labels.txt") as file:
     capd_labels = file.read().splitlines()
