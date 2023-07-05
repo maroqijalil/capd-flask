@@ -40,7 +40,7 @@ class CAPDDetection(Resource):
 
     labels_list = list(capd_labels)
 
-    return { "label": str(labels_list[int(preds_result[0])]), "accuracy": str(preds_proba.numpy().tolist()) }
+    return { "label": str(labels_list[int(preds_result[0])]), "accuracy": str(preds_proba.numpy().tolist()[0]) }
 
 
 api.add_resource(CAPDDetection, '/api')
