@@ -28,16 +28,19 @@ class CAPDDetection(Resource):
     resized_image = ImageOps.fit(image, size, Image.ANTIALIAS)
     
     image_array = np.asarray(resized_image)
-    normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1
+    normalized_image_array = (image_array.astype(np.float32) / 255.0)
 
     data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
-    data[0] = normalized_image_array
-    prediction = capd_model.predict(data)
+    data[0] = image_array
+    preds = capd_model.predict(data).flatten()
 
-    prediction_max = np.max(prediction[0])
-    prediction_index = np.argmax(prediction[0])
+    preds_proba = tf.nn.sigmoid(preds)
+    preds = tf.where(preds_proba < 0.5, 0, 1)
+    preds_result = preds.numpy().tolist()
 
-    return { "label": capd_labels[prediction_index], "accuracy": np.float32(prediction_max).item() }
+    labels_list = list(capd_labels)
+
+    return { "label": str(labels_list[int(preds_result[0])]), "accuracy": str(preds_proba.numpy().tolist()) }
 
 
 api.add_resource(CAPDDetection, '/api')
